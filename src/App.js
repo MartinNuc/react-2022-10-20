@@ -1,32 +1,35 @@
 import './App.css';
-import { Table } from './jsx/Table';
-import { MouseTracker } from './useEffect/MouseTracker';
-import { Counter } from './useState/Counter';
-import { AutoCounter } from './useEffect/AutoCounter';
-import { Dropdown } from './dropdown/dropdown';
+import React, { useState, useMemo } from 'react';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { CategoriesPage } from './pages/categories';
+import { JokePage } from './pages/joke';
+import { HomePage } from './pages/home';
+
+export const ThemeContext = React.createContext();
 
 function App() {
   let something = 'Martin';
 
-  return <>
-    <h1>Hello {something}</h1>
+  const [isDarkModeEnabled, setIsDarkModeEnabled] = useState(true);
+  const themeContextValue = useMemo(() => ({
+    isDarkModeEnabled,
+    toggleDarkMode: () => setIsDarkModeEnabled(!isDarkModeEnabled)
+  }), [isDarkModeEnabled]);
 
-    <Dropdown />
+  return <BrowserRouter>
+    <ThemeContext.Provider value={themeContextValue}>
+      <ul>
+        <li><Link to="/">Home</Link></li>
+        <li><Link to="/categories">Categories</Link></li>
+      </ul>
 
-    <AutoCounter />
-
-    <MouseTracker />
-
-    <Counter onCounterChanged={(n) => console.log(`Counter is ${n}!`)} />
-
-    <Table rows={3} columns={10}>
-      <button onClick={() => console.log('Cau')}>Cau</button>
-    </Table>
-    <hr />
-    <Table rows={7} columns={3}>
-      Ahoj
-    </Table>
-  </>;
+      <Routes>
+        <Route index path="/" element={<HomePage />} />
+        <Route path="/categories" element={<CategoriesPage />} />
+        <Route path="/categories/:category" element={<JokePage />} />
+      </Routes>
+    </ThemeContext.Provider >
+  </BrowserRouter>;
 }
 
 export default App;

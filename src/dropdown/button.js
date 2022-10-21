@@ -1,5 +1,7 @@
-export const Button = (props) => {
+import React from 'react';
+
+export const Button = React.memo((props) => {
   return <button onClick={() => props.onToggle()}>
-    {props.children}
+    Open / close
   </button>
-}
+})

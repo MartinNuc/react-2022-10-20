@@ -1,13 +1,16 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-export function Counter(props) {
+export function Counter({ onCounterChanged }) {
   const [counter, setCounter] = useState(0);
   const [incrementBy, setIncrementBy] = useState(1);
 
-  function handleClick() {
-    setCounter(counter + incrementBy);
-    props.onCounterChanged(counter + incrementBy);
-  }
+  const handleClick = useCallback(() => {
+    setCounter(counter => counter + incrementBy);
+  }, [incrementBy]);
+
+  useEffect(() => {
+    onCounterChanged(counter);
+  }, [counter, onCounterChanged]);
 
   return <>
     <div>{counter}</div>

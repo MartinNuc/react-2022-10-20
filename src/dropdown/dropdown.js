@@ -1,18 +1,20 @@
 import { Button } from "./button"
 import { Content } from "./content"
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 export const Dropdown = () => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
-  function handleToggleDropdown() {
-    setIsDropdownVisible(!isDropdownVisible);
-  }
+  // function handleToggleDropdown() {
+  //   setIsDropdownVisible(isDropdownVisible => !isDropdownVisible)
+  // }
+  const handleToggleDropdown = useCallback(() =>
+    setIsDropdownVisible(isDropdownVisible => !isDropdownVisible)
+    // setIsDropdownVisible(!isDropdownVisible)
+    , []);
 
   return <>
-    <Button onToggle={() => handleToggleDropdown()}>
-      {isDropdownVisible ? 'Close' : 'Open'}
-    </Button>
+    <Button onToggle={handleToggleDropdown}></Button>
     {isDropdownVisible && <Content />}
   </>
 }

@@ -1,9 +1,12 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { ThemeContext } from "../App";
 import styles from './MouseTracker.module.css';
 
 export function MouseTracker() {
   const [coordinates, setCoordinates] = useState({ x: 0, y: 0 });
   const [lastClickCoordinates, setLastClickCoordinates] = useState({ x: 0, y: 0 });
+
+  const { isDarkModeEnabled } = useContext(ThemeContext);
 
   useEffect(() => {
     function mouseMoveHandler(event) {
@@ -29,8 +32,10 @@ export function MouseTracker() {
 
   const textClass = coordinates.x < lastClickCoordinates.x ? styles.green : styles.red;
 
-  return <div className={textClass}>
-    <div>Current position X: {coordinates.x} Y: {coordinates.y}</div>
-    <div>Last click X: {lastClickCoordinates.x} Y: {lastClickCoordinates.y}</div>
+  return <div className={isDarkModeEnabled ? styles.dark : null}>
+    <div className={textClass}>
+      <div>Current position X: {coordinates.x} Y: {coordinates.y}</div>
+      <div>Last click X: {lastClickCoordinates.x} Y: {lastClickCoordinates.y}</div>
+    </div>
   </div>
 }
